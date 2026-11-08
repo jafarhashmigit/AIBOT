@@ -1,0 +1,18 @@
+# AIBOT core runtime: data pipeline, RF baseline, backtests, evaluation framework,
+# research scripts without deep-learning models, and the read-only MT5 probe.
+#
+# Versions were read from the installed environments on 2026-11-08
+# (`pip list` in %TEMP%\aibot_venv and the project .venv, Python 3.12.10 x64).
+# Both environments carry identical versions of every package below.
+#
+# Optional research-only dependencies:  requirements-research.txt
+# Legacy dependencies (not imported):   requirements-legacy.txt
+# Verify without installing:            python tools/verify_requirements.py
+
+numpy==2.5.4
+pandas==3.1.1
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0
+tzdata==2026.6
+MetaTrader5==5.0.6231

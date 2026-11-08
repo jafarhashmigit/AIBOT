@@ -1,0 +1,19 @@
+# Optional research-only dependencies, used only by src/research_kronos_m5.py
+# (Kronos foundation-model evaluation). Nothing in the core pipeline imports them.
+#
+# Versions were read from %TEMP%\aibot_venv on 2026-11-08 (Python 3.12.10 x64).
+# torch is the CUDA 12.6 build, published on the PyTorch package index:
+#   --extra-index-url https://download.pytorch.org/whl/cu126
+#
+# The Kronos model code is not a pip package. It is a git checkout of
+# https://github.com/shiyu-coder/Kronos at commit 67b630e67f6a18c9e9be918d9b4337c960db1e9a,
+# located at %TEMP%\kronos_repo (KRONOS_REPO in research_kronos_m5.py).
+# Model weights are pinned by Hugging Face revision inside that script.
+
+-r requirements.txt
+
+torch==2.14.1+cu126
+einops==0.8.1
+huggingface-hub==0.33.1
+safetensors==0.6.2
+tqdm==4.67.1

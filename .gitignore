@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------------------
+# AIBOT .gitignore
+# Ignored files stay on disk; ignoring only keeps them out of version control.
+# ---------------------------------------------------------------------------
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Python caches and tool output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+
+# Credentials, keys and private configuration
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+*secret*
+*credential*
+*password*
+*token*.json
+
+# MetaTrader 5 terminal files and logs
+*.log
+*.ex4
+*.ex5
+*.hcc
+*.hc
+*.srv
+*.dat
+MQL5/
+MQL4/
+Terminal/
+
+# Datasets, generated research outputs and reports (immutable; integrity is
+# tracked through the hash snapshots recorded inside each report)
+src/data/
+reports/
+*.csv
+*.parquet
+*.feather
+*.h5
+*.zip
+
+# Model binaries
+src/models/*.pkl
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.safetensors
+*.onnx
+
+# Temporary and OS files
+*.tmp
+*.temp
+*.bak
+~$*
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+
+# Stray empty file created by a shell command (kept on disk, not versioned)
+/where

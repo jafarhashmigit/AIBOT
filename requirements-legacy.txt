@@ -1,0 +1,13 @@
+# Legacy dependencies listed in the original requirements.txt (pandas, numpy,
+# scikit-learn, yfinance, matplotlib, unpinned). No project script imports
+# yfinance or matplotlib (verified by import scan on 2026-11-08). They appear
+# to date from the retired daily-data experiment (gold_history.csv). Kept
+# only so that history stays reproducible.
+#
+# Versions were read from the project .venv on 2026-11-08 (Python 3.12.10 x64).
+# Neither package is installed in %TEMP%\aibot_venv.
+
+-r requirements.txt
+
+yfinance==1.8.0
+matplotlib==3.11.2
