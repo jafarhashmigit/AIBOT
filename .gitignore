@@ -79,3 +79,7 @@ desktop.ini
 
 # Stray empty file created by a shell command (kept on disk, not versioned)
 /where
+
+# Phase 25 third-party audit source snapshots (do not republish)
+src/phase25/audit/raw/
+
