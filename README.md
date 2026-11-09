@@ -60,19 +60,25 @@ Optional:
 
 **Do not open** the final holdout file `src/data/xauusd_m5_test.csv` for research. Research cutoff is `2026-09-29 18:50:00` UTC.
 
-### Secrets
+### Secrets / Discord key name
+
+| Env key name | Required for | Notes |
+|--------------|--------------|--------|
+| **`DISCORD_WEBHOOK_URL`** | Phase 16B live test / Phase 22 `--discord-live` | Discord Incoming Webhook URL only |
 
 ```powershell
 copy .env.example .env
 ```
 
-Edit `.env`:
+Edit `.env` and set this exact key name:
 
 ```env
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN
 ```
 
-Never commit `.env`. Rotate the webhook if it was ever exposed.
+- Key name must be exactly: `DISCORD_WEBHOOK_URL`
+- Value is the full Discord webhook URL (not a bot token, not a channel ID alone)
+- Never commit `.env`. Rotate the webhook if it was ever exposed.
 
 ---
 
