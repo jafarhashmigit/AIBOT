@@ -5,7 +5,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from phase18.horizons import format_pkt, parse_utc
+from aibot_time import display_pkt, display_utc, storage_utc_wall
+from phase18.horizons import parse_utc
 
 UTC = timezone.utc
 BAR_MINUTES = 5
@@ -36,12 +37,21 @@ def filter_completed_bars(bars: list[dict[str, Any]], *, as_of_utc: str) -> list
 
 
 def enrich_observation_timestamps(bar: dict[str, Any]) -> dict[str, str]:
+    """Attach display labels; keep raw UTC storage fields unlabeled."""
     open_utc = str(bar.get("bar_open_timestamp_utc", ""))
     close_utc = str(bar.get("bar_close_timestamp_utc", ""))
+    # Storage / ID-compatible raw UTC (unlabeled).
+    raw_close = storage_utc_wall(close_utc) if close_utc else ""
+    raw_open = storage_utc_wall(open_utc) if open_utc else ""
     return {
-        "candle_timestamp_utc": close_utc,
-        "candle_timestamp_pkt": format_pkt(parse_utc(close_utc)) if close_utc else "",
-        "bar_open_timestamp_pkt": format_pkt(parse_utc(open_utc)) if open_utc else "",
+        "candle_timestamp_utc": raw_close or close_utc,
+        "candle_timestamp_pkt": display_pkt(close_utc) if close_utc else "",
+        "bar_open_timestamp_pkt": display_pkt(open_utc) if open_utc else "",
+        # Explicit dual display for user-facing journals/reports.
+        "candle_timestamp_utc_display": display_utc(close_utc) if close_utc else "",
+        "bar_open_timestamp_utc_display": display_utc(open_utc) if open_utc else "",
+        "candle_timestamp_storage_utc": raw_close or close_utc,
+        "bar_open_timestamp_storage_utc": raw_open or open_utc,
     }
 
 

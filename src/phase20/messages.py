@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from aibot_time import maybe_display_pkt, maybe_display_pkt_clock, maybe_display_utc
 from phase18.constants import FORBIDDEN_SIGNAL_PHRASES, HORIZON_LABELS, HORIZONS
-from phase18.horizons import expected_outcome_check_pkt, format_pkt, format_pkt_clock, parse_utc
+from phase18.horizons import expected_outcome_check_pkt
 from phase20.constants import (
     CANDIDATE_STATUS,
     CHAMPION_STATUS,
@@ -26,7 +27,6 @@ def build_shadow_signal_payload(decision: dict[str, Any], observation: dict[str,
     final = str(decision.get("final_action", "WAIT")).upper()
     header = SHADOW_BUY_HEADER if exp == "BUY" else SHADOW_SELL_HEADER
     close_utc = observation.get("bar_close_timestamp_utc") or decision.get("decision_timestamp_utc", "")
-    close_pkt = format_pkt(parse_utc(close_utc)) if close_utc else ""
     entry_ref = observation.get("close", decision.get("entry_reference", ""))
 
     lines = [
@@ -35,8 +35,8 @@ def build_shadow_signal_payload(decision: dict[str, Any], observation: dict[str,
         "",
         f"Symbol: {observation.get('symbol', SYMBOL)}",
         f"Side: {exp}",
-        f"Timestamp UTC: {close_utc}",
-        f"Timestamp PKT: {close_pkt}",
+        f"Timestamp: {maybe_display_utc(close_utc)}",
+        f"Timestamp: {maybe_display_pkt(close_utc)}",
         f"Entry/reference price: {entry_ref}",
         "",
         f"Selected Horizon: {SELECTED_HORIZON_DISPLAY}",
@@ -91,10 +91,13 @@ def build_shadow_outcome_payload(outcome: dict[str, Any]) -> dict[str, str]:
             lines.append(f"Realized R: {outcome.get('realized_r', '')}")
     elif status == "TIMEOUT":
         lines.append("No TP/SL barrier completed within the selected horizon.")
-    if outcome.get("decision_timestamp_utc"):
-        lines.append(f"Signal Time: {format_pkt_clock(parse_utc(outcome['decision_timestamp_utc']))}")
+    signal_raw = outcome.get("decision_timestamp_utc") or ""
     out_ts = outcome.get("outcome_timestamp_utc") or outcome.get("exit_timestamp_utc") or ""
+    if signal_raw:
+        lines.append(f"Signal Time: {maybe_display_pkt_clock(signal_raw)}")
+        lines.append(f"Signal Time UTC: {maybe_display_utc(signal_raw)}")
     if out_ts:
-        lines.append(f"Outcome Time: {format_pkt_clock(parse_utc(out_ts))}")
+        lines.append(f"Outcome Time: {maybe_display_pkt_clock(out_ts)}")
+        lines.append(f"Outcome Time UTC: {maybe_display_utc(out_ts)}")
     lines.extend(["", f"Status: {CANDIDATE_STATUS}", "Shadow observation only — NOT validated trading performance."])
     return {"content": "\n".join(lines)}

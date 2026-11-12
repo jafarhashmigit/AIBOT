@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aibot_time import maybe_display_pkt, maybe_display_utc
 from phase16b.constants import (
     CANDIDATE_STATUS,
     CHAMPION_STATUS,
@@ -14,12 +15,14 @@ from phase16b.constants import (
 
 
 def _base_fields(event: dict[str, Any]) -> list[str]:
+    raw = event.get("decision_timestamp_utc", "")
     lines = [
         f"event_id: {event.get('event_id', '')}",
         f"decision_id: {event.get('decision_id', '')}",
         f"symbol: {event.get('symbol', 'XAUUSD')}",
         f"timeframe: {event.get('timeframe', 'M5')}",
-        f"decision_timestamp_utc: {event.get('decision_timestamp_utc', '')}",
+        f"decision_timestamp: {maybe_display_utc(raw)}",
+        f"decision_timestamp_pkt: {maybe_display_pkt(raw)}",
         f"champion: {event.get('champion_status', CHAMPION_STATUS)}",
         f"candidate_status: {event.get('candidate_status', CANDIDATE_STATUS)}",
     ]

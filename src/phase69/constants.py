@@ -1,0 +1,79 @@
+"""Phase 69 constants."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+SRC_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = SRC_DIR.parent
+REPORTS_DIR = PROJECT_ROOT / "reports" / "phase69"
+DOCS_DIR = PROJECT_ROOT / "docs" / "agent"
+DATA_ROOT = SRC_DIR / "data" / "phase69"
+REGISTRY_PATH = DATA_ROOT / "hypothesis_registry.json"
+SUFFICIENCY_PATH = DATA_ROOT / "evidence_sufficiency.json"
+ACCOUNTING_PATH = DATA_ROOT / "live_evidence_accounting.json"
+
+# Reuse Phase67 journal — do not create a second store
+PHASE67_JOURNAL = SRC_DIR / "data" / "phase67" / "exness_market_evidence_journal"
+PHASE67_VERIFY = PROJECT_ROOT / "reports" / "phase67" / "verify_runtime.json"
+PHASE58_SPLITS = PROJECT_ROOT / "reports" / "phase58" / "dataset_splits.json"
+
+RECIPE_ID = "phase69_evidence_accumulation_hypothesis_prereg_v1"
+REGISTRY_VERSION = "phase69_hypothesis_registry_v1"
+
+CHAMPION_STATUS = "NO_MODEL"
+PRODUCTION_FINAL_ACTION = "WAIT"
+LIVE_TRADING = "NOT_AUTHORIZED"
+AUTOMATED_ORDERS = "DISABLED"
+BROKER_COLLECTION = "READ_ONLY"
+BROKER_EXECUTION_AUTHORIZED = False
+BROKER_SUBMISSION_ENABLED = False
+ORDER_SEND = "PROHIBITED"
+EXECUTION_AUTHORIZATION = "BLOCKED"
+UNAPPROVED = "UNAPPROVED"
+COST_MODEL_INCOMPLETE = "INCOMPLETE"
+COMMISSION_UNKNOWN = "UNKNOWN"
+SWAP_UNKNOWN = "UNKNOWN_FOR_EXECUTION"
+MARGIN_INCOMPLETE = "INCOMPLETE"
+GENUINE_FILLS = "NONE_TRADE_FILLS"
+EXPECTED_NULL_POLICY = "phase54_null_policy_v1"
+
+# Canonical provenance (Phase69) — map from Phase68 labels for backward compat
+HISTORICAL_BACKFILL = "HISTORICAL_BACKFILL"
+BROKER_OBSERVED_LIVE_BAR = "BROKER_OBSERVED_LIVE_BAR"
+BROKER_OBSERVED_QUOTE = "BROKER_OBSERVED_QUOTE"
+SYNTHETIC_FIXTURE = "SYNTHETIC_FIXTURE"
+LIVE_INCOMPLETE_OR_FORMING_M5 = "LIVE_INCOMPLETE_OR_FORMING_M5"
+
+PROVENANCE_ALIASES = {
+    "HISTORICAL_INIT_BACKFILL": HISTORICAL_BACKFILL,
+    "NEWLY_OBSERVED_LIVE_CLOSED_M5": BROKER_OBSERVED_LIVE_BAR,
+    "LIVE_QUOTE_OBSERVATION": BROKER_OBSERVED_QUOTE,
+    "SYNTHETIC_TEST_FIXTURE": SYNTHETIC_FIXTURE,
+    HISTORICAL_BACKFILL: HISTORICAL_BACKFILL,
+    BROKER_OBSERVED_LIVE_BAR: BROKER_OBSERVED_LIVE_BAR,
+    BROKER_OBSERVED_QUOTE: BROKER_OBSERVED_QUOTE,
+    SYNTHETIC_FIXTURE: SYNTHETIC_FIXTURE,
+    LIVE_INCOMPLETE_OR_FORMING_M5: LIVE_INCOMPLETE_OR_FORMING_M5,
+}
+
+PROVISIONAL_INDEPENDENT_DATE_TARGET = 20
+
+STATUS_INSUFFICIENT = "INSUFFICIENT_LIVE_EVIDENCE"
+STATUS_ACTIVE = "COLLECTION_ACTIVE"
+STATUS_THRESHOLD = "EVIDENCE_THRESHOLD_REACHED"
+STATUS_QUALITY_BLOCKED = "DATA_QUALITY_BLOCKED"
+
+
+def canonical_json(obj: object) -> str:
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=str)
+
+
+def sha256_hex(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def canonical_json_sha256(obj: object) -> str:
+    return sha256_hex(canonical_json(obj))

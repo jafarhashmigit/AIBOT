@@ -62,9 +62,9 @@ PROTECTED_HASHES = {
     "src/phase18/experience.py": "eab2109d62ec3dd36615395cc70ab39fa9c0bf8b1eb9e055e22b7f103200335c",
     "src/phase18/store.py": "079458f58df8fef99f827ae00fbc5639e10735fe8d32714711492351813e0416",
     "src/phase20/loop.py": "542f4a84c85578c33c68b4a0b7143b2226026aa3da7d6b059f8f4dc9b1d16e0f",
-    "src/phase20/constants.py": "04597817bd8471b88b1cdfc5e0b1841ddfdc9ee472432b8cd376782581607b50",
-    "src/phase20/messages.py": "2f3a5c2598bd8601736905053fb8a4daee956848a2ca7aa485afc41ce0e7793a",
-    "src/phase20/candles.py": "cb1d7914d7b53479fecda88a20c9d0e627afa99b845ab21f5c3258b3a23fe4ac",
+    "src/phase20/constants.py": "13dc30b30ea1d04c80a7fc41da724736e71b64671d0012d26eb3c8efc74460c0",
+    "src/phase20/messages.py": "58d041566f5a885ae3aa18f8a2f5225f1ac4d5d10bc5e3120036265877525b55",
+    "src/phase20/candles.py": "03027a4739c1e1651fdf9721518c2acfff581e8ad5683afda2cd2699103e3eda",
     "src/phase21/constants.py": "c12a784fbb80ed2759283c2075e06fecfd9d92c2808d3322aceb086c229f6e40",
     "src/phase21/analysis.py": "03b9cb8187c1c81684a8b35872790006e142d187db9fbd0dd9786d82580e7c55",
 }

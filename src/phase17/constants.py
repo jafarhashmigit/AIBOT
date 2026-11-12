@@ -47,7 +47,7 @@ PROTECTED_HASHES = {
     "src/phase16b/adapter.py": "ffefb4dc2a466770b9a7e769d21bd6f75600d5a3bee2b70d9607e45770475692",
     "src/phase16b/client.py": "48bac377a60ac67cfbcd5a847070bb993049f6f1fd65329ec3586e6ae584d0bb",
     "src/phase16b/dedupe.py": "7b36e3dba2674217bc7632bfa1c17627d66e68275113eded5c025f1e3ba15563",
-    "src/phase16b/formatter.py": "d68098a1120e8f31b28ece2c564a0856cdb6eacd61606e3b0de50d403191dc83",
+    "src/phase16b/formatter.py": "9c6585b26a1c6858ad8eb156bf797de1cb213a4586c577e2faad84f40f80fe1a",
     "src/phase16b/secrets.py": "935e341dcdee5b969ae6acdde92ad6c817b234ddaa9244e59857e278e2dad684",
     "src/phase16b/run_phase16b.py": "6561751655ac26bda5f41807f06024cba4a6fd73c9b39242f897703c8032f4bc",
 }

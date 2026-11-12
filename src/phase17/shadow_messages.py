@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aibot_time import maybe_display_pkt, maybe_display_utc
 from phase17.constants import (
     CANDIDATE_STATUS,
     CHAMPION_STATUS,
@@ -26,6 +27,7 @@ def build_shadow_payload(decision: dict[str, Any], observation: dict[str, Any]) 
     else:
         header = SHADOW_WAIT_HEADER
 
+    close_raw = observation.get("bar_close_timestamp_utc", "")
     lines = [
         f"**{header}**",
     ]
@@ -35,7 +37,8 @@ def build_shadow_payload(decision: dict[str, Any], observation: dict[str, Any]) 
         [
             f"symbol: {observation.get('symbol', SYMBOL)}",
             f"timeframe: {observation.get('timeframe', TIMEFRAME)}",
-            f"candle_close_utc: {observation.get('bar_close_timestamp_utc', '')}",
+            f"candle_close: {maybe_display_utc(close_raw)}",
+            f"candle_close_pkt: {maybe_display_pkt(close_raw)}",
             f"experimental_action: {exp}",
             f"final_production_action: {final}",
             f"model_status: {decision.get('model_status', CHAMPION_STATUS)}",

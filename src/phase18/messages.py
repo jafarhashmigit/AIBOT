@@ -25,11 +25,9 @@ from phase18.constants import (
     STRATEGY_ID,
     SYMBOL,
 )
+from aibot_time import maybe_display_pkt, maybe_display_pkt_clock, maybe_display_utc
 from phase18.horizons import (
     expected_outcome_check_pkt,
-    format_pkt,
-    format_pkt_clock,
-    parse_utc,
     selected_horizon_info,
 )
 
@@ -117,7 +115,8 @@ def build_signal_payload(
             "",
             f"decision_id: {decision.get('decision_id', '')}",
             f"event_id: {decision.get('decision_id', '')}",
-            f"candle_close_utc: {close_utc}",
+            f"candle_close: {maybe_display_utc(close_utc)}",
+            f"candle_close_pkt: {maybe_display_pkt(close_utc)}",
             "Notification only. No broker order.",
         ]
     )
@@ -134,9 +133,10 @@ def build_outcome_payload(outcome: dict[str, Any]) -> dict[str, str]:
     status = str(outcome.get("status", "")).upper()
     side = str(outcome.get("side", "")).upper()
     horizon = outcome.get("horizon_label") or HORIZON_LABELS.get(outcome.get("horizon_id", ""), "")
-    signal_pkt = format_pkt(parse_utc(outcome["decision_timestamp_utc"])) if outcome.get("decision_timestamp_utc") else ""
+    signal_raw = outcome.get("decision_timestamp_utc") or ""
     out_ts = outcome.get("outcome_timestamp_utc") or outcome.get("exit_timestamp_utc") or ""
-    outcome_pkt = format_pkt(parse_utc(out_ts)) if out_ts else ""
+    signal_pkt = maybe_display_pkt(signal_raw)
+    outcome_pkt = maybe_display_pkt(out_ts)
 
     lines = [
         f"**{OUTCOME_HEADER}**",
@@ -170,10 +170,12 @@ def build_outcome_payload(outcome: dict[str, Any]) -> dict[str, str]:
     lines.extend(
         [
             "",
-            f"Signal Time: {format_pkt_clock(parse_utc(outcome['decision_timestamp_utc'])) if outcome.get('decision_timestamp_utc') else ''}",
-            f"Outcome Time: {format_pkt_clock(parse_utc(out_ts)) if out_ts else ''}",
-            f"Signal Day PKT: {signal_pkt}",
-            f"Outcome Day PKT: {outcome_pkt}",
+            f"Signal Time: {maybe_display_pkt_clock(signal_raw)}",
+            f"Signal Time UTC: {maybe_display_utc(signal_raw)}",
+            f"Outcome Time: {maybe_display_pkt_clock(out_ts)}",
+            f"Outcome Time UTC: {maybe_display_utc(out_ts)}",
+            f"Signal Day: {signal_pkt}",
+            f"Outcome Day: {outcome_pkt}",
             "",
             f"Status: {CANDIDATE_STATUS}",
             "NOT A LIVE TRADING RESULT",

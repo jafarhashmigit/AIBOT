@@ -1,4 +1,8 @@
-"""Static MT5 API allowlist. Never imports MetaTrader5."""
+"""Static MT5 API allowlist. Never imports MetaTrader5.
+
+Phase64.8 expanded PERMITTED with four read-only evidence APIs.
+order_send and all mutation APIs remain PROHIBITED.
+"""
 
 from __future__ import annotations
 
@@ -16,6 +20,11 @@ PERMITTED_MT5_API = frozenset({
     "copy_rates_from_pos",
     "copy_rates_range",
     "version",
+    # Phase64.8 — approved read-only broker evidence APIs (reconciliation only)
+    "positions_get",
+    "orders_get",
+    "history_deals_get",
+    "history_orders_get",
 })
 
 PROHIBITED_MT5_API = frozenset({
@@ -23,16 +32,20 @@ PROHIBITED_MT5_API = frozenset({
     "order_check",
     "order_calc_margin",
     "order_calc_profit",
-    "positions_get",
     "positions_total",
-    "orders_get",
     "orders_total",
-    "history_orders_get",
-    "history_deals_get",
     "buy",
     "sell",
     "Close",
     "symbol_select",
+})
+
+# Explicit Phase64.8 approval marker (documentation / audits)
+PHASE64_8_APPROVED_READ_ONLY = frozenset({
+    "positions_get",
+    "orders_get",
+    "history_deals_get",
+    "history_orders_get",
 })
 
 

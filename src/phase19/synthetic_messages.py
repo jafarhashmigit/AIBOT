@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from aibot_time import maybe_display_pkt, maybe_display_pkt_clock, maybe_display_utc
 from phase18.constants import HORIZON_LABELS, HORIZONS
-from phase18.horizons import expected_outcome_check_pkt, expected_outcome_check_utc, format_pkt_clock, parse_utc
+from phase18.horizons import expected_outcome_check_pkt, expected_outcome_check_utc
 from phase19.constants import (
     CANDIDATE_STATUS,
     CHAMPION_STATUS,
@@ -72,7 +73,8 @@ def build_synthetic_signal_payload(
             "",
             f"decision_id: {decision.get('decision_id', '')}",
             f"event_id: {decision.get('decision_id', '')}",
-            f"candle_close_utc: {close_utc}",
+            f"candle_close: {maybe_display_utc(close_utc)}",
+            f"candle_close_pkt: {maybe_display_pkt(close_utc)}",
             "Synthetic validation only. No broker order.",
         ]
     )
@@ -107,11 +109,14 @@ def build_synthetic_outcome_payload(outcome: dict[str, Any]) -> dict[str, str]:
             lines.append(f"Realized R: {outcome.get('realized_r', '')}")
     elif status == "TIMEOUT":
         lines.append("No TP/SL barrier completed within the selected horizon.")
-    if outcome.get("decision_timestamp_utc"):
-        lines.append(f"Signal Time: {format_pkt_clock(parse_utc(outcome['decision_timestamp_utc']))}")
+    signal_raw = outcome.get("decision_timestamp_utc") or ""
     out_ts = outcome.get("outcome_timestamp_utc") or outcome.get("exit_timestamp_utc") or ""
+    if signal_raw:
+        lines.append(f"Signal Time: {maybe_display_pkt_clock(signal_raw)}")
+        lines.append(f"Signal Time UTC: {maybe_display_utc(signal_raw)}")
     if out_ts:
-        lines.append(f"Outcome Time: {format_pkt_clock(parse_utc(out_ts))}")
+        lines.append(f"Outcome Time: {maybe_display_pkt_clock(out_ts)}")
+        lines.append(f"Outcome Time UTC: {maybe_display_utc(out_ts)}")
     lines.extend(["", f"Status: {CANDIDATE_STATUS}", "NOT A LIVE TRADING RESULT"])
     content = "\n".join(lines)
     assert_no_guarantee_language(content)

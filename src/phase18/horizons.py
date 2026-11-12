@@ -28,21 +28,31 @@ def parse_utc(stamp: str) -> datetime:
 
 
 def format_utc(dt: datetime) -> str:
+    """Unlabeled UTC wall-clock for storage/eligibility math. Prefer display_utc for UI."""
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=UTC)
     return dt.astimezone(UTC).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def format_pkt(dt: datetime) -> str:
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=UTC)
-    return dt.astimezone(PKT).strftime("%Y-%m-%d %H:%M:%S PKT")
+    """User-visible PKT stamp — always ends with explicit PKT label."""
+    from aibot_time import display_pkt
+
+    return display_pkt(dt)
 
 
 def format_pkt_clock(dt: datetime) -> str:
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=UTC)
-    return dt.astimezone(PKT).strftime("%H:%M PKT")
+    """User-visible PKT clock — always ends with explicit PKT label."""
+    from aibot_time import display_pkt_clock
+
+    return display_pkt_clock(dt)
+
+
+def display_utc(dt: datetime | str) -> str:
+    """User-visible UTC stamp — always ends with explicit UTC label."""
+    from aibot_time import display_utc as _display_utc
+
+    return _display_utc(dt)
 
 
 def pkt_calendar_date(dt: datetime) -> str:

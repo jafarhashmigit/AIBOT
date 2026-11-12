@@ -264,8 +264,13 @@ class Phase12BTests(unittest.TestCase):
         self.assertEqual(broker_order_calls(), 0)
         tree = audit_phase12_tree(PHASE12_ROOT)
         self.assertEqual(tree["prohibited_any"], [])
-        for name in ("order_send", "order_check", "positions_get", "orders_get"):
+        # Mutation / check APIs remain prohibited. Phase64.8 approved positions_get/orders_get
+        # as read-only evidence APIs — they must still not appear in the Phase12 metadata adapter.
+        for name in ("order_send", "order_check"):
             self.assertIn(name, PROHIBITED_MT5_API)
+            self.assertNotIn(name, audit_source(ADAPTER)["permitted_used"])
+        for name in ("positions_get", "orders_get", "history_deals_get", "history_orders_get"):
+            self.assertIn(name, PERMITTED_MT5_API)
             self.assertNotIn(name, audit_source(ADAPTER)["permitted_used"])
 
     def test_20_no_actual_mt5_connection_during_tests(self):
